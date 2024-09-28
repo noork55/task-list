@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { TextField, Button, Box } from "@mui/material";
+
 import { createTask, updateTask } from "../services/api";
 import { Task } from "../types/task";
 
@@ -28,27 +30,56 @@ const TaskForm: React.FC<TaskFormProps> = ({ task, onSave }) => {
     } else {
       await createTask({ title, description });
     }
-    setTitle(''); // Reset title
-    setDescription(''); // Reset description
+    setTitle(""); // Reset title
+    setDescription(""); // Reset description
     onSave();
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Title"
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 2 }}
+    >
+      <TextField
+        label="Title"
+        variant="outlined"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
+        fullWidth
+        sx={{
+          '& .MuiInputBase-root': {
+            backgroundColor: 'white',
+          },
+          '& .MuiInputLabel-root': {
+            backgroundColor: 'white',
+            padding: '0 4px',
+          },
+        }}
       />
-      <textarea
-        placeholder="Description"
+      <TextField
+        label="Description"
+        variant="outlined"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
+        multiline
+        rows={4}
+        fullWidth
+        sx={{
+          '& .MuiInputBase-root': {
+            backgroundColor: 'white',
+          },
+          '& .MuiInputLabel-root': {
+            backgroundColor: 'white',
+            padding: '0 4px',
+          },
+        }}
       />
-      <button type="submit">Save</button>
-    </form>
+      <Button type="submit" variant="contained" color="primary">
+        Save Task
+      </Button>
+    </Box>
   );
 };
 
