@@ -9,8 +9,13 @@ const TaskList: React.FC = () => {
   const [editingTask, setEditingTask] = useState<Task | null>(null);
 
   const fetchTasks = async () => {
-    const response = await getTasks();
-    setTasks(response.data);
+    try {
+      const response = await getTasks();
+      console.log(response.data);
+      setTasks(response.data);
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    }
   };
 
   useEffect(() => {
@@ -18,9 +23,13 @@ const TaskList: React.FC = () => {
   }, []);
 
   const handleDelete = async (id: string) => {
-    await deleteTask(id);
-    setEditingTask(null);
-    fetchTasks();
+    try {
+      await deleteTask(id);
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+      setEditingTask(null);
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
   };
 
   const handleEdit = (task: Task) => {
